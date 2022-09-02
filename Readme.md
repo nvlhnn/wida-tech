@@ -1,8 +1,388 @@
-### Postman Collection URL
+# Postman Collection URL
 ```
 https://www.getpostman.com/collections/a67e7c1b7262bc00a0ac
 ```
 
+# Sample API Request 
+REST API to the app is described below.
+
+* ##  Get Invoices
+
+<!-- Get all invoice data, total profit, and total cash transaction, with or without filter -->
+
+### Request
+```http
+GET /invoices/?date=02/09/2022&size=12&page=1
+```
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `date` | `string` | **Optional**. Filter base on invoice's date with format *dd/mm/yyyy* |
+| `size` | `string` | **Optional**. Set size of each page with default value is 10 |
+| `page` | `string` | **Optional**. Set Invoices page |
+
+### Response 
+```json
+{
+    "status": true,
+    "message": "invoice list",
+    "data": {
+        "totalCash": 91500,
+        "totalProfit": 28500,
+        "list": [
+            {
+                "id": 2,
+                "date": "2022-09-01T17:00:00.000Z",
+                "customerName": "buyer2",
+                "salespersonName": "sales1",
+                "paymentType": "CREDIT",
+                "notes": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, rem.",
+                "createdAt": "2022-09-01T09:51:56.846Z",
+                "updatedAt": "2022-09-01T09:51:56.846Z",
+                "products": [
+                    {
+                        "id": 2,
+                        "itemName": "product2",
+                        "quantity": 2,
+                        "totalCogs": "63000",
+                        "totalPrice": "91500",
+                        "invoiceId": 2,
+                        "createdAt": "2022-09-01T09:51:56.859Z",
+                        "updatedAt": "2022-09-01T09:51:56.859Z"
+                    },
+                ]
+            }
+        ]
+    }
+}
+```
+
+* ## Create Invoice
+
+### Request
+```http
+POST /invoices
+```
+### Body
+| Attribute | Type | Description |
+| :--- | :--- | :--- |
+| date | `string` | **Required**.  Valid date with format *dd/mm/yyyy* |
+| salespersonName | `string` | **Required** |
+| customerName | `string` | **Required** |
+| paymentType | `string` | **Required**. *CASH* or *CREDIT* |
+| notes | `string` | **Optional** |
+| products | `Array`| **Required**. Array of product object with minimun length of 1|
+| products.itemName | `string`| **Required**|
+| products.quantity | `number`| **Required**|
+| products.totalCogs | `number`| **Required**|
+| products.totalPrice | `number`| **Required**|
+
+```json
+{
+    "date": "31/08/2022",
+    "salespersonName": "naufal",
+    "customerName": "hanan",
+    "paymentType":"CASH",
+    "products": [
+        {
+            "itemName":"sasas",
+            "quantity": 5,
+            "totalCogs": 45000,
+            "totalPrice": 50000
+        },
+        {
+            "itemName":"sasas",
+            "quantity": 5,
+            "totalCogs": 45000,
+            "totalPrice": 50000
+        }
+    ]
+}
+```
+### Response 
+```json
+{
+    "status": true,
+    "message": "create success",
+    "data": {
+        "id": 4,
+        "date": "2022-08-30T17:00:00.000Z",
+        "salespersonName": "naufal",
+        "customerName": "hanan",
+        "paymentType": "CASH",
+        "products": [
+            {
+                "id": 16,
+                "itemName": "sasas",
+                "quantity": 5,
+                "totalCogs": "45000",
+                "totalPrice": "50000",
+                "invoiceId": 4,
+                "updatedAt": "2022-09-01T10:06:58.344Z",
+                "createdAt": "2022-09-01T10:06:58.344Z"
+            },
+            {
+                "id": 17,
+                "itemName": "sasas",
+                "quantity": 5,
+                "totalCogs": "45000",
+                "totalPrice": "50000",
+                "invoiceId": 4,
+                "updatedAt": "2022-09-01T10:06:58.344Z",
+                "createdAt": "2022-09-01T10:06:58.344Z"
+            }
+        ],
+        "updatedAt": "2022-09-01T10:06:58.268Z",
+        "createdAt": "2022-09-01T10:06:58.268Z",
+        "notes": null
+    }
+}
+```
+
+* ## Update Invoice
+### Request
+```http
+PUT /invoices/{:invoiceId}
+```
+### Body
+| Attribute | Type | Description |
+| :--- | :--- | :--- |
+| date | `string` | **Optional**. Valid date with format *dd/mm/yyyy* |
+| salespersonName | `string` | **Optional** |
+| customerName | `string` | **Optional** |
+| paymentType | `string` | **Optional**. *CASH* or *CREDIT* |
+| notes | `string` | **Optional** |
+```json
+{
+    "customerName":"new name",
+    "paymentType": "CREDIT",
+    "notes": "lorem ipsum"
+}
+```
+### Response 
+```json
+{
+    "status": true,
+    "message": "update success",
+    "data": {
+        "id": 4,
+        "date": "2022-08-30T17:00:00.000Z",
+        "salespersonName": "naufal",
+        "customerName": "new name",
+        "paymentType": "CREDIT",
+        "products": [
+            {
+                "id": 16,
+                "itemName": "sasas",
+                "quantity": 5,
+                "totalCogs": "45000",
+                "totalPrice": "50000",
+                "invoiceId": 4,
+                "updatedAt": "2022-09-01T10:06:58.344Z",
+                "createdAt": "2022-09-01T10:06:58.344Z"
+            },
+            {
+                "id": 17,
+                "itemName": "sasas",
+                "quantity": 5,
+                "totalCogs": "45000",
+                "totalPrice": "50000",
+                "invoiceId": 4,
+                "updatedAt": "2022-09-01T10:06:58.344Z",
+                "createdAt": "2022-09-01T10:06:58.344Z"
+            }
+        ],
+        "updatedAt": "2022-09-01T10:06:58.268Z",
+        "createdAt": "2022-09-01T10:06:58.268Z",
+    	"notes": "lorem ipsum"
+    }
+}
+```
+
+* ## Delete Invoice
+### Request
+```http
+DELETE /invoices/{:invoiceId}
+```
+### Response 
+```json
+{
+    "status": true,
+    "message": "delete success",
+    "data": null
+}
+```
+
+* ## Upload XLSX
+### Request
+```http
+POST /invoices/upload-xlsx
+```
+### Body 
+| Attribute | Type | Description |
+| :--- | :--- | :--- |
+| file | `file` | **Optional**. Valid xlsx file in formdata |
+### Response 
+```json
+{
+    "status": true,
+    "message": [
+        {
+            "sheet": "invoice",
+            "errors": [
+                {
+                    "row": 7,
+                    "message": "Duplicate data on invoice with invoice no 2"
+                },
+                {
+                    "row": 9,
+                    "message": "Duplicate data on invoice with invoice no 4"
+                },
+                {
+                    "row": 5,
+                    "message": "Invalid data from invoice no 4. payment type must be one of the following values: CASH, CREDIT"
+                },
+                {
+                    "row": 6,
+                    "message": "Invalid data from invoice no 5. salesperson is a required field"
+                }
+            ]
+        },
+        {
+            "sheet": "product sold",
+            "errors": [
+                {
+                    "row": 6,
+                    "message": "Invalid invoice no. Invoice with no 7 doesn't exist on the invoice sheet"
+                },
+                {
+                    "row": 11,
+                    "message": "Invalid data. total cogs is a required field"
+                },
+                {
+                    "row": 7,
+                    "message": "Invalid data on invoice sheet. With invoice no 4"
+                },
+                {
+                    "row": 8,
+                    "message": "Invalid data on invoice sheet. With invoice no 5"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "id": 10,
+            "date": "2020-12-31T17:00:00.000Z",
+            "customerName": "John",
+            "salespersonName": "Doe",
+            "paymentType": "CASH",
+            "notes": "Lorem ipsum",
+            "products": [
+                {
+                    "id": 15,
+                    "itemName": "Bluetooth speaker",
+                    "quantity": 3,
+                    "totalCogs": "630000",
+                    "totalPrice": "756000",
+                    "invoiceId": 10,
+                    "createdAt": "2022-09-01T09:45:41.020Z",
+                    "updatedAt": "2022-09-01T09:45:41.020Z"
+                },
+                {
+                    "id": 16,
+                    "itemName": "Headphone",
+                    "quantity": 8,
+                    "totalCogs": "400000",
+                    "totalPrice": "480000",
+                    "invoiceId": 10,
+                    "createdAt": "2022-09-01T09:45:41.020Z",
+                    "updatedAt": "2022-09-01T09:45:41.020Z"
+                }
+            ],
+            "createdAt": "2022-09-01T09:45:41.020Z",
+            "updatedAt": "2022-09-01T09:45:41.020Z"
+        },
+        {
+            "id": 11,
+            "date": "2020-12-31T17:00:00.000Z",
+            "customerName": "John",
+            "salespersonName": "Doe",
+            "paymentType": "CASH",
+            "notes": "Lorem ipsum",
+            "products": [
+                {
+                    "id": 17,
+                    "itemName": "Laptop charger",
+                    "quantity": 4,
+                    "totalCogs": "800000",
+                    "totalPrice": "960000",
+                    "invoiceId": 11,
+                    "createdAt": "2022-09-01T09:45:41.020Z",
+                    "updatedAt": "2022-09-01T09:45:41.020Z"
+                }
+            ],
+            "createdAt": "2022-09-01T09:45:41.020Z",
+            "updatedAt": "2022-09-01T09:45:41.020Z"
+        },
+        {
+            "id": 12,
+            "date": "2021-01-02T17:00:00.000Z",
+            "customerName": "Jane",
+            "salespersonName": "Doe",
+            "paymentType": "CREDIT",
+            "notes": "Lorem ipsum",
+            "products": [
+                {
+                    "id": 18,
+                    "itemName": "LCD Monitor",
+                    "quantity": 1,
+                    "totalCogs": "500000",
+                    "totalPrice": "600000",
+                    "invoiceId": 12,
+                    "createdAt": "2022-09-01T09:45:41.020Z",
+                    "updatedAt": "2022-09-01T09:45:41.020Z"
+                },
+                {
+                    "id": 19,
+                    "itemName": "Bluetooth speaker",
+                    "quantity": 1,
+                    "totalCogs": "210000",
+                    "totalPrice": "252000",
+                    "invoiceId": 12,
+                    "createdAt": "2022-09-01T09:45:41.020Z",
+                    "updatedAt": "2022-09-01T09:45:41.020Z"
+                }
+            ],
+            "createdAt": "2022-09-01T09:45:41.020Z",
+            "updatedAt": "2022-09-01T09:45:41.020Z"
+        },
+        {
+            "id": 13,
+            "date": "2021-01-04T17:00:00.000Z",
+            "customerName": "Jeff",
+            "salespersonName": "Pete",
+            "paymentType": "CREDIT",
+            "notes": "Lorem ipsum",
+            "products": [
+                {
+                    "id": 20,
+                    "itemName": "Bluetooth speaker",
+                    "quantity": 1,
+                    "totalCogs": "210000",
+                    "totalPrice": "252000",
+                    "invoiceId": 13,
+                    "createdAt": "2022-09-01T09:45:41.020Z",
+                    "updatedAt": "2022-09-01T09:45:41.020Z"
+                }
+            ],
+            "createdAt": "2022-09-01T09:45:41.020Z",
+            "updatedAt": "2022-09-01T09:45:41.020Z"
+        }
+    ]
+}
+```
+
+# Postman collection v2.1 JSON
 ```json
 {
 	"info": {
