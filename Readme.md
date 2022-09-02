@@ -5,11 +5,16 @@ https://www.getpostman.com/collections/a67e7c1b7262bc00a0ac
 
 # Sample API Request 
 REST API to the app is described below.
+## endpoint
+| method | endpoint                     |
+|--------|------------------------------|
+| get    | /invoices                    | 
+| post   | /invoices                    | 
+| put    | /invoices/{:productId}       | 
+| delete | /invoices/{:productId}       |
+| post   | /invoices/upload-xlsx        |
 
-* ##  Get Invoices
-
-<!-- Get all invoice data, total profit, and total cash transaction, with or without filter -->
-
+* ##  Get Invoices  
 ### Request
 ```http
 GET /invoices/?date=02/09/2022&size=12&page=1

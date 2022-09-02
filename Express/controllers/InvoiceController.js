@@ -1,4 +1,3 @@
-// const setResponse
 const { Op, Sequelize } = require("sequelize");
 const moment = require("moment"); // require
 const { Invoice, Product } = require("../models");
@@ -6,7 +5,7 @@ const setResponse = require("../utils/response");
 var XLSX = require("xlsx");
 const InvoiceSchema = require("../validations/InvoiceShema");
 const fs = require("fs");
-const { error } = require("console");
+
 class InvoiceController {
   static read = async (req, res, next) => {
     try {
